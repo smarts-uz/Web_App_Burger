@@ -18,10 +18,10 @@ body {
 
 .img {
 	width: 150px;
-}
+} 
 
 .item {
-	text-align: center;
+	text-align: center; 
 }
 
 .btn {
@@ -35,6 +35,11 @@ body {
 	font-weight: 700;
 
 	transition: background .2s linear;
+}
+
+.h3{
+	font-size: 18px;
+	margin-top: 5px;
 }
 
 .btn:hover {

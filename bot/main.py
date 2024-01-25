@@ -1,9 +1,12 @@
+import executor as executor
+from config import BOT_TOKEN
 from aiogram import Bot, Dispatcher
 
 import asyncio
 
-bot = Bot(token='token')
+bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(bot=bot)
+
 
 async def main():
     from handlers import dp
@@ -12,8 +15,11 @@ async def main():
     finally:
         await bot.session.close()
 
+
 if __name__ == "__main__":
     try:
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
         print('Bot stopped!')
+if __name__ == "__main__":
+    executor.start_polling(dp)

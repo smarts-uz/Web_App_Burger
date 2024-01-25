@@ -1,12 +1,18 @@
+from config import PAYMENTS_TOKEN
 from main import bot, dp
 from keyboards import keyboard
 from aiogram import types
 from aiogram.dispatcher.filters import Command
 
-@dp.message_handler(Command('start'))
-async def start(message: types.Message):
-    await bot.send_message(message.chat.id, 'Тестируем WebApp!',
-                           reply_markup=keyboard)
+@dp.message_handler(Command())
+async def bot_start(message: types.Message):
+    # chat_id = message.from_user.id
+    # await db.create_user(chat_id)
+    await message.answer(f"Assalomu aleykum, Xush kelibsiz!",
+                         reply_markup=keyboard,
+                         )
+    await message.delete()
+
 
 PRICE = {
     '1': [types.LabeledPrice(label='Item1', amount=100000)],
@@ -17,21 +23,24 @@ PRICE = {
     '6': [types.LabeledPrice(label='Item6', amount=600000)]
 }
 
+
 @dp.message_handler(content_types='web_app_data')
 async def buy_process(web_app_message):
     await bot.send_invoice(web_app_message.chat.id,
                            title='Laptop',
                            description='Description',
-                           provider_token='pay_token',
+                           provider_token=PAYMENTS_TOKEN,
                            currency='rub',
                            need_email=True,
                            prices=PRICE[f'{web_app_message.web_app_data.data}'],
                            start_parameter='example',
                            payload='some_invoice')
 
+
 @dp.pre_checkout_query_handler(lambda query: True)
 async def pre_checkout_process(pre_checkout: types.PreCheckoutQuery):
     await bot.answer_pre_checkout_query(pre_checkout.id, ok=True)
+
 
 @dp.message_handler(content_types=types.ContentType.SUCCESSFUL_PAYMENT)
 async def successful_payment(message: types.Message):
