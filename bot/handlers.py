@@ -4,13 +4,12 @@ from keyboards import keyboard
 from aiogram import types
 from aiogram.dispatcher.filters import Command
 
-@dp.message_handler(Command())
-async def bot_start(message: types.Message):
-    # chat_id = message.from_user.id
-    # await db.create_user(chat_id)
-    await message.answer(f"Assalomu aleykum, Xush kelibsiz!",
-                         reply_markup=keyboard,
-                         )
+
+@dp.message_handler(Command('start'))
+async def start(message: types.Message):
+    await bot.send_message(message.chat.id, 'Test!',
+                           reply_markup=keyboard)
+
     await message.delete()
 
 
@@ -30,7 +29,7 @@ async def buy_process(web_app_message):
                            title='Laptop',
                            description='Description',
                            provider_token=PAYMENTS_TOKEN,
-                           currency='rub',
+                           currency='sum',
                            need_email=True,
                            prices=PRICE[f'{web_app_message.web_app_data.data}'],
                            start_parameter='example',
